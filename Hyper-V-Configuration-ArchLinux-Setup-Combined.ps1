@@ -50,7 +50,12 @@ If your windows version supports it, search for "Run" in the search bar and open
 <#
 .Example 
 
-PowerShell Profile setup
+PowerShell Profile setup (Usually located at:
+C:\Users\<your_username>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+
+Or more simply:
+
+~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 
 # Check if profile directory exists, create it if not
 if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
@@ -61,8 +66,6 @@ if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
 "Starting PowerShell Profile Configuration..."
 
 
-.NOTES 
-Configuring PowerShellGet and NuGet
 
 .# 1. Set up PowerShellGet and NuGet
 if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
@@ -139,6 +142,10 @@ Write-Host "PowerShell Profile Configuration Complete!"
 
 # Optional: Open a new PowerShell window to apply changes
 Write-Host "Restart your PowerShell session to fully apply changes."
+
+.NOTES 
+PowerShellProfile that Configures PowerShellGet and NuGet.
+It also Installs Modules for both Hyper-V and Azure.
 
 
 #>
