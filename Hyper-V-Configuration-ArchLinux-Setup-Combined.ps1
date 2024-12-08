@@ -48,7 +48,10 @@ If your windows version supports it, search for "Run" in the search bar and open
 #>
 
 <#
-.PowerShell Example Profile
+.Example 
+
+PowerShell Profile setup
+
 # Check if profile directory exists, create it if not
 if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
     New-Item -ItemType Directory -Path (Split-Path -Parent $PROFILE) -Force
@@ -57,7 +60,8 @@ if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
 # Begin profile configuration
 "Starting PowerShell Profile Configuration..."
 
-.Configuring PowerShellGet and NuGet
+
+.NOTES Configuring PowerShellGet and NuGet
 
 .# 1. Set up PowerShellGet and NuGet
 if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
