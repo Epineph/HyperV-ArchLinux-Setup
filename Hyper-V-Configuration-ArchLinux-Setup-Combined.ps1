@@ -48,6 +48,13 @@ If your windows version supports it, search for "Run" in the search bar and open
 #>
 
 <#
+er
+.SYNOPSIS
+A PowerShellProfile that takes care of configuring PowerShellGet, 
+
+
+Setting up the PSGallery repository as trusted, and then installs, amongst other things, Hyper-V and Azure, these modules are useful for a developer wowrking with VM-ware and cloud-based solutions.  
+
 .Example 
 
 PowerShell Profile setup (Usually located at:
@@ -126,11 +133,10 @@ Set-PSReadLineOption -Colors @{
 Write-Host "Adding Unix-like command aliases..."
 Set-Alias ll Get-ChildItem
 Set-Alias la "Get-ChildItem -Force"
-Set-Alias .. Set-Location ..
-
 # 9. Automatically import Az and Hyper-V on startup
 Write-Host "Adding Az and Hyper-V modules to auto-import..."
 if (Get-Module -ListAvailable -Name Az) {
+
     Import-Module -Name Az
 }
 if (Get-Module -ListAvailable -Name Hyper-V) {
