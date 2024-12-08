@@ -42,6 +42,100 @@ Creates a new Arch Linux VM with the specified resources, attaches an ISO, and c
 
 .NOTES
 Requires Hyper-V to be enabled and running on the host system.
+
+If your windows version supports it, search for "Run" in the search bar and open it. Type in optionalFeatures. The window that pops up will contain Hyper-V if your version supports it. Make sure to check the boxes.
+
+#>
+
+<#
+.PowerShell Example Profile
+# Check if profile directory exists, create it if not
+if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
+    New-Item -ItemType Directory -Path (Split-Path -Parent $PROFILE) -Force
+}
+
+# Begin profile configuration
+"Starting PowerShell Profile Configuration..."
+
+.Configuring PowerShellGet and NuGet
+
+.# 1. Set up PowerShellGet and NuGet
+if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
+    Write-Host "Installing PowerShellGet and NuGet..."
+    Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+    Install-Module -Name PowerShellGet -Force -Scope CurrentUser
+}
+
+
+
+# 2. Register PSGallery as trusted repository
+if (-not (Get-PSRepository | Where-Object { $_.Name -eq 'PSGallery' })) {
+    Write-Host "Registering PSGallery..."
+    Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2 -InstallationPolicy Trusted
+}
+
+# 3. Install and configure Az module for Azure development
+if (-not (Get-Module -ListAvailable -Name Az)) {
+    Write-Host "Installing Az module for Azure..."
+    Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
+}
+
+# 4. Import Hyper-V module if available
+if (-not (Get-Module -ListAvailable -Name Hyper-V)) {
+    if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V).State -eq "Enabled") {
+        Write-Host "Hyper-V is already enabled."
+        Import-Module -Name Hyper-V
+    } else {
+        Write-Host "Enabling Hyper-V feature..."
+        Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+    }
+}
+
+# 5. Set up PackageManagement for module installation
+if (-not (Get-Command Install-Module -ErrorAction SilentlyContinue)) {
+    Write-Host "Installing PackageManagement module..."
+    Install-Module -Name PackageManagement -Force -Scope CurrentUser
+}
+
+# 6. Other development tools
+Write-Host "Installing useful development modules..."
+$devModules = @('Pester', 'Plaster', 'PSReadLine', 'PSWriteColor')
+foreach ($module in $devModules) {
+    if (-not (Get-Module -ListAvailable -Name $module)) {
+        Install-Module -Name $module -Force -Scope CurrentUser
+    }
+}
+
+# 7. Configure PSReadLine for better shell usability
+Set-PSReadLineOption -EditMode Emacs
+Set-PSReadLineKeyHandler -Key Tab -Function Complete
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -Colors @{
+    InlinePrediction = [ConsoleColor]::DarkGray
+}
+
+# 8. Enable command aliases for common Unix-like commands
+Write-Host "Adding Unix-like command aliases..."
+Set-Alias ll Get-ChildItem
+Set-Alias la "Get-ChildItem -Force"
+Set-Alias .. Set-Location ..
+
+# 9. Automatically import Az and Hyper-V on startup
+Write-Host "Adding Az and Hyper-V modules to auto-import..."
+if (Get-Module -ListAvailable -Name Az) {
+    Import-Module -Name Az
+}
+if (Get-Module -ListAvailable -Name Hyper-V) {
+    Import-Module -Name Hyper-V
+}
+
+# Completion message
+Write-Host "PowerShell Profile Configuration Complete!"
+
+# Optional: Open a new PowerShell window to apply changes
+Write-Host "Restart your PowerShell session to fully apply changes."
+
+
 #>
 
 param (
