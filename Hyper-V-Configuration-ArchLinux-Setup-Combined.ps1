@@ -61,7 +61,8 @@ if (-not (Test-Path -Path (Split-Path -Parent $PROFILE))) {
 "Starting PowerShell Profile Configuration..."
 
 
-.NOTES Configuring PowerShellGet and NuGet
+.NOTES 
+Configuring PowerShellGet and NuGet
 
 .# 1. Set up PowerShellGet and NuGet
 if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
